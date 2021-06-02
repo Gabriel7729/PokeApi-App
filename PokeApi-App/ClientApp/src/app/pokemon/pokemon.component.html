@@ -1,0 +1,59 @@
+<!-- <div *ngFor="let poke of ListPokemon">
+  <p><b>Id: </b>{{ poke.id }}</p>
+  <p><b>Nombre: </b>{{ poke.name }}</p>
+  <p><b>Peso: </b>{{ poke.weight }}</p>
+  <p><b>Tamaño: </b>{{ poke.Height }}</p>
+  <p><b>Experiencia Base: </b>{{ poke.base_experience }}</p>
+  <p><b>url: </b>{{ poke.url }}</p>
+</div> -->
+
+
+<div class="row">
+<div class="col-lg-12">
+  <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" alt="">
+
+  <div class="form-group">
+    <input type="text" class="form-control form-control-lg mt-4" placeholder="Buscar..." [(ngModel)]="filterpost" name="filterPost">
+  </div>
+  
+
+</div>
+</div>
+
+<div class="row">
+<div class="col-md-4 mt-5" *ngFor="let poke of ListPokemon | filter: filterpost">
+  <div class="card profile-card-5">
+      <div class="card-img-block">
+          <img class="card-img-top" src="https://assets.pokemon.com/assets//cms2-es-es/img/video-games/_tiles/pokemon-go/05272021/pokemon-go-169.jpg" alt="Card image cap">
+      </div>
+          <div class="card-body pt-0">
+          <h5 class="card-title">{{ poke.id }} - {{ poke.name }}</h5>
+          <p class="card-text"></p>
+          <div class="caja">
+            <button class="btn btn-warning" (click)="triggerModal(modalData)">Ver detalles</button>
+          </div>
+        </div>
+      </div>
+
+      <ng-template #modalData let-modal>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">{{ poke.id }} - {{ poke.name }}</h4>
+          <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p><strong>{{ poke.name }}<span class="text-primary">"Agatha Harkness"</span> profile?</strong></p>
+          
+          <p>All data related to west view profile will be removed permanently.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+        </div>
+      </ng-template>
+
+</div>
+</div>
+
+
