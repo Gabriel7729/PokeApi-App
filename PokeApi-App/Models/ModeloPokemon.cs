@@ -124,7 +124,7 @@ namespace PokeApi_App.Models
         public string id { get; set; }
         public bool is_default { get; set; }
         public string location_area_encounters { get; set; }
-        public List<Move> moves { get; set; }
+        public List<Move> moves { get; set; }   
         public string name { get; set; }
         public string order { get; set; }
         public Species species { get; set; }

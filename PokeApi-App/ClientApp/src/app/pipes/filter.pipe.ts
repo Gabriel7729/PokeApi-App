@@ -5,6 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class FilterPipe implements PipeTransform {
 
+  //Filtro Ts
   transform(value: any, arg: any): any {
     const resultPosts = [];
     for(const ListPokemon of value){

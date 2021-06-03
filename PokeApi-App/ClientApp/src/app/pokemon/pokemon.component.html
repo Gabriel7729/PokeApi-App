@@ -1,40 +1,50 @@
-<!-- <div *ngFor="let poke of ListPokemon">
-  <p><b>Id: </b>{{ poke.id }}</p>
-  <p><b>Nombre: </b>{{ poke.name }}</p>
-  <p><b>Peso: </b>{{ poke.weight }}</p>
-  <p><b>Tamaño: </b>{{ poke.Height }}</p>
-  <p><b>Experiencia Base: </b>{{ poke.base_experience }}</p>
-  <p><b>url: </b>{{ poke.url }}</p>
-</div> -->
-
-
+<!-- Logo y input -->
 <div class="row">
-<div class="col-lg-12">
-  <img class="img-fluid" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" alt="">
+  <div class="col-lg-12">
 
-  <div class="form-group">
-    <input type="text" class="form-control form-control-lg mt-4" placeholder="Buscar..." [(ngModel)]="filterpost" name="filterPost">
+    <div class="caja">
+      <img class="img-fluid" style="width: 40rem;" src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/International_Pok%C3%A9mon_logo.svg/1200px-International_Pok%C3%A9mon_logo.svg.png" alt="">
+    </div>
+
+    <div class="form-group">
+      <input type="text" class="form-control form-control-lg mt-4" placeholder="Buscar..." [(ngModel)]="filterpost" name="filterPost">
+    </div>
+    
   </div>
-  
-
-</div>
 </div>
 
-<div class="row">
-<div class="col-md-4 mt-5" *ngFor="let poke of ListPokemon | filter: filterpost">
+<!-- Spinner cargando overlay -->
+<div class="overlay" *ngIf="!ListPokemon">
+  <div class="spinner ">
+      <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif"/>
+  </div>
+</div>
+
+<!-- Main Section -->
+<div class="row" *ngIf="(filterpost != '' && ListPokemon )">
+<div class="col-md-3 mt-5" *ngFor="let poke of ListPokemon | filter: filterpost">
   <div class="card profile-card-5">
-      <div class="card-img-block">
-          <img class="card-img-top" src="https://assets.pokemon.com/assets//cms2-es-es/img/video-games/_tiles/pokemon-go/05272021/pokemon-go-169.jpg" alt="Card image cap">
+      <div class="card-img-bloc">
+          <img class="card-img-top" src="{{ poke.sprites.front_default }}" alt="Card image cap">
       </div>
           <div class="card-body pt-0">
           <h5 class="card-title">{{ poke.id }} - {{ poke.name }}</h5>
-          <p class="card-text"></p>
           <div class="caja">
-            <button class="btn btn-warning" (click)="triggerModal(modalData)">Ver detalles</button>
+            <p class="card-text" style="font-size: 24px;" *ngIf="(poke.types.length == 1)">
+              <strong>{{ poke.types[0].type.name }}</strong>
+            </p>
+            <p class="card-text" style="font-size: 24px;" *ngIf="(poke.types.length == 2)">
+              <strong>{{ poke.types[0].type.name }} / {{ poke.types[1].type.name }}</strong>
+            </p>
+          </div>
+          <br />
+          <div class="caja">
+            <button class="btn btn-warning" (click)="triggerModal(modalData)"><i class="bi bi-pencil-square"></i> Ver detalles</button>
           </div>
         </div>
-      </div>
+    </div>
 
+      <!-- Modal template from Bootstrap -->
       <ng-template #modalData let-modal>
         <div class="modal-header">
           <h4 class="modal-title" id="modal-basic-title">{{ poke.id }} - {{ poke.name }}</h4>
@@ -42,18 +52,57 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">
-          <p><strong>{{ poke.name }}<span class="text-primary">"Agatha Harkness"</span> profile?</strong></p>
+        <div class="modal-body" style="width:33rem;">
+          <div class="row">
+            <div class="col-md-6">
+
+              <div>
+                <img src="{{ poke.sprites.front_default }}" alt="img-pokemon" class="rounded float-left" style="width:15rem; height:16rem; border: 2px solid; box-shadow: 5px 10px #FFFF00;">
+              </div>
+            </div>
+
+            <br />
+            
+            <div class="col-md-6 ">
+              <h4 class="text-warning"><strong>Datos de {{ poke.name }}</strong></h4>
           
-          <p>All data related to west view profile will be removed permanently.
-          </p>
+              <p><strong>ID:</strong> {{ poke.id }}</p>
+
+              <p *ngIf="(poke.types.length == 1)">
+                <strong>Tipo:</strong> {{ poke.types[0].type.name }}
+              </p>
+              <p *ngIf="(poke.types.length == 2)">
+                <strong>Tipo:</strong> {{ poke.types[0].type.name }} / {{ poke.types[1].type.name }}
+              </p>
+
+              <p><strong>Peso:</strong> {{ poke.weight }} kg</p>
+              <p><strong>Altura:</strong> {{ poke.height }} m</p>
+    
+              <p *ngIf="poke.abilities.length > -1;" >
+                <strong>Habilidad:</strong> {{ poke.abilities[0].ability.name }}
+              </p>
+              <p *ngIf="poke.abilities.length > -1;" >
+                <strong>Hab. Oculta:</strong> {{ poke.abilities[1].ability.name }}
+              </p>
+
+            </div>
+          </div>
+
+          <div *ngIf="(poke.types.length == 1)">
+            <button class="btn btn-primary" (click)="Txt1(poke.id, poke.name, poke.types[0].type.name, poke.weight, poke.height, poke.abilities[0].ability.name, poke.abilities[1].ability.name)"><i class="bi bi-download"></i> Descargar detalles</button>
+          </div>
+
+          <div *ngIf="(poke.types.length == 2)">
+            <button class="btn btn-primary" (click)="Txt(poke.id, poke.name, poke.types[0].type.name, poke.types[1].type.name, poke.weight, poke.height, poke.abilities[0].ability.name, poke.abilities[1].ability.name)"><i class="bi bi-download"></i> Descargar detalles</button>
+          </div>
+
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" (click)="modal.close('Save click')">Close</button>
+          <button type="button" class="btn btn-danger" (click)="modal.close('Save click')"><i class="bi bi-x-circle"></i> Cerrar</button>
         </div>
       </ng-template>
 
 </div>
 </div>
 
-
+<br /><br /><br /><br /><br /><br />

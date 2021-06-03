@@ -14,47 +14,39 @@ namespace PokeApi_App.Controllers
     [Route("[controller]")]
     public class PokeApiController : Controller
     {
+        //Instancias de las listas del modelo
         List<Result> ListaPokemon = new List<Result>();
         List<Result2> ListarDatosPokemon = new List<Result2>();
-        ModeloPokemon pokemon1 = new ModeloPokemon();
-        List<ModeloPokemon> ListarLosPokemon = new List<ModeloPokemon>();
 
+        //Get de la Api
         [HttpGet]
         public IEnumerable<Result2> GetPokemon()
         {
-            string url = "https://pokeapi.co/api/v2/pokemon?limit=10&offset=0";
+            //Proceso para consumir la Api mediante la url y deserializando los objetos por Json
+            string url = "https://pokeapi.co/api/v2/pokemon?limit=100&offset=0";
             WebClient client = new WebClient();
             var data = client.DownloadString(url);
             var resultado = JsonConvert.DeserializeObject<Root>(data);
+
+            //Foreach para añadir lo consumido por la api a la lista de mi clase modelo
             foreach(var pokemon in resultado.results)
             {
                 ListaPokemon.Add(pokemon);
             }
 
+            //Foreach para listar las url con la informacion de todos los pokemons
             foreach(var poke in ListaPokemon)
             {
+                //Deserializanddo cada uno de los pokemons mediante su Url de la Api
                 var data2 = client.DownloadString(poke.url);
                 var resultado2 = JsonConvert.DeserializeObject<Result2>(data2);
 
+                //Añado cada uno de los datos de todos los pokemons que consumí de las apis
                 ListarDatosPokemon.Add(resultado2);
-                
-                
-                //foreach (var datosPokemonTipo in ListarDatosPokemon)
-                //{
-                    
-                //    if (datosPokemonTipo.slot == "1")
-                //    {
-                //        pokemon1.Type = datosPokemonTipo.type.name;
-                //        ListarLosPokemon.Add(datosPokemonTipo);
-                //    }
-                //    else
-                //    {
-                //        pokemon1.Type2 = datosPokemonTipo.type.name;
-                //    }
-                //}
 
             }
 
+            //Retorno la lista de los datos de todos lo pokemons de la PokeApi
             return ListarDatosPokemon;
         }
     }
