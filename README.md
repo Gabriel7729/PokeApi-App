@@ -1,6 +1,9 @@
 # PokeApi-App
 App PokeApi Angular C#
 
+# Link de un video de Youtube explicando el funcionamient odel programa
+Link: https://youtu.be/iRYWz8qWYxo
+
 # Tutorial para iniciar el sistema
 
 1. Lo primero es ejecutar la aplicación de esta manera:
